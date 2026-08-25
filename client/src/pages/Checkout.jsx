@@ -278,13 +278,14 @@ export default function Checkout() {
                 </div>
 
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Phone Number *</label>
+                  <label className="block text-slate-700 font-semibold mb-1">Phone Number (10 Digits) *</label>
                   <input
-                    type="text"
+                    type="tel"
                     required
+                    maxLength={10}
                     placeholder="Enter 10-digit mobile number"
                     value={address.phone}
-                    onChange={(e) => setAddress({ ...address, phone: e.target.value })}
+                    onChange={(e) => setAddress({ ...address, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 outline-none focus:border-green-600 font-medium text-slate-900"
                   />
                 </div>

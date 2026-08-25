@@ -209,13 +209,14 @@ export default function Contact() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-slate-700 font-bold uppercase tracking-wider mb-1">
-                  Phone Number
+                  Phone Number (10 Digits)
                 </label>
                 <input
-                  type="text"
-                  placeholder="e.g. +91 9876543210"
+                  type="tel"
+                  maxLength={10}
+                  placeholder="e.g. 9876543210"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 outline-none focus:border-green-600 font-medium text-slate-900"
                 />
               </div>

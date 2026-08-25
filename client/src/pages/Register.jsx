@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Mail, Lock, Eye, EyeOff, UserCheck, AlertCircle, Loader2, Leaf } from "lucide-react";
+import { User, Mail, Phone, Lock, Eye, EyeOff, UserCheck, AlertCircle, Loader2, Leaf } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useShop } from "../context/ShopContext";
 
@@ -12,6 +12,7 @@ export default function Register() {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: ""
   });
@@ -23,7 +24,11 @@ export default function Register() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    let finalValue = value;
+    if (name === "phone") {
+      finalValue = value.replace(/\D/g, "").slice(0, 10); // Restrict to 10 numeric digits only
+    }
+    setFormData((prev) => ({ ...prev, [name]: finalValue }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
     setServerError("");
   };
@@ -34,8 +39,12 @@ export default function Register() {
     if (!formData.email.trim()) newErrors.email = "Email address is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Enter a valid email address";
 
+    if (formData.phone && !/^\d{10}$/.test(formData.phone)) {
+      newErrors.phone = "Phone number must be exactly 10 digits";
+    }
+
     if (!formData.password) newErrors.password = "Password is required";
-    else if (formData.password.length < 6) newErrors.password = "Password must be at least 6 characters";
+    else if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters";
 
     if (!formData.confirmPassword) newErrors.confirmPassword = "Please confirm password";
     else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
@@ -55,6 +64,7 @@ export default function Register() {
       await register({
         name: formData.username,
         email: formData.email,
+        phone: formData.phone,
         password: formData.password
       });
       showToast("✓ Account created successfully!", "success");
@@ -117,7 +127,7 @@ export default function Register() {
           <form onSubmit={handleSubmit} className="space-y-3.5">
             <div className="space-y-1">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Full Name
+                Full Name *
               </label>
               <div className="relative flex items-center">
                 <input
@@ -135,7 +145,7 @@ export default function Register() {
 
             <div className="space-y-1">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Email Address
+                Email Address *
               </label>
               <div className="relative flex items-center">
                 <input
@@ -153,7 +163,26 @@ export default function Register() {
 
             <div className="space-y-1">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Password
+                Mobile Number (10 Digits)
+              </label>
+              <div className="relative flex items-center">
+                <input
+                  type="tel"
+                  name="phone"
+                  maxLength={10}
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="9876543210"
+                  className="w-full bg-slate-50 border border-slate-200 text-xs rounded-xl pl-10 pr-4 py-2.5 outline-none focus:border-green-600 focus:bg-white font-medium transition-all"
+                />
+                <Phone className="w-4 h-4 text-slate-400 absolute left-3.5" />
+              </div>
+              {errors.phone && <span className="text-[11px] text-red-600 font-semibold">{errors.phone}</span>}
+            </div>
+
+            <div className="space-y-1">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Password *
               </label>
               <div className="relative flex items-center">
                 <input
@@ -178,7 +207,7 @@ export default function Register() {
 
             <div className="space-y-1">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Confirm Password
+                Confirm Password *
               </label>
               <div className="relative flex items-center">
                 <input

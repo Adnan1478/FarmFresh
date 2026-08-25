@@ -4,7 +4,11 @@ const crypto = require("crypto");
 const addressSchema = new mongoose.Schema(
   {
     fullName: String,
-    phone: String,
+    phone: {
+      type: String,
+      trim: true,
+      match: [/^\d{10}$/, "Phone number must be exactly 10 digits"],
+    },
     addressLine: String,
     city: String,
     state: String,
@@ -43,6 +47,7 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
       trim: true,
+      match: [/^\d{10}$/, "Phone number must be exactly 10 digits"],
     },
 
     role: {

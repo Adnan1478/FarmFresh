@@ -805,6 +805,69 @@ export default function AdminInventory() {
           </form>
         </div>
       )}
+
+      {/* Add Supplier Modal */}
+      {showSupplierModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto flex items-center justify-center p-4">
+          <div onClick={() => setShowSupplierModal(false)} className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs" />
+          <form onSubmit={handleAddSupplier} className="relative bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 z-10 border border-slate-100 text-xs">
+            <h3 className="font-black text-slate-900 text-base">Add New Farm Supplier</h3>
+
+            <div>
+              <label className="block text-slate-700 font-bold mb-1">Supplier / Contact Person Name *</label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Ramesh Kumar"
+                value={supplierForm.name}
+                onChange={(e) => setSupplierForm({ ...supplierForm, name: e.target.value })}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 outline-none font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-700 font-bold mb-1">Company / Farm Name *</label>
+              <input
+                type="text"
+                required
+                placeholder="e.g. Green Acres Organic Farms"
+                value={supplierForm.companyName}
+                onChange={(e) => setSupplierForm({ ...supplierForm, companyName: e.target.value })}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 outline-none font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-700 font-bold mb-1">Phone Number (10 Digits) *</label>
+              <input
+                type="tel"
+                required
+                maxLength={10}
+                placeholder="e.g. 9876543210"
+                value={supplierForm.phone}
+                onChange={(e) => setSupplierForm({ ...supplierForm, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 outline-none font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-700 font-bold mb-1">Email Address</label>
+              <input
+                type="email"
+                placeholder="e.g. supplier@farm.com"
+                value={supplierForm.email}
+                onChange={(e) => setSupplierForm({ ...supplierForm, email: e.target.value })}
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 outline-none font-medium"
+              />
+            </div>
+
+            <div className="flex gap-2 justify-end pt-2">
+              <button type="button" onClick={() => setShowSupplierModal(false)} className="px-4 py-2 bg-slate-100 text-slate-600 font-bold rounded-xl">Cancel</button>
+              <button type="submit" className="px-5 py-2 bg-green-600 text-white font-bold rounded-xl shadow-md">Add Supplier</button>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }

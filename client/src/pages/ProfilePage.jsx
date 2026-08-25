@@ -423,13 +423,14 @@ export default function ProfilePage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-slate-700 font-bold uppercase tracking-wider">Phone Number</label>
+              <label className="block text-slate-700 font-bold uppercase tracking-wider">Phone Number (10 Digits)</label>
               <div className="relative flex items-center">
                 <input
-                  type="text"
-                  placeholder="e.g. +91 9876543210"
+                  type="tel"
+                  maxLength={10}
+                  placeholder="e.g. 9876543210"
                   value={userInfo.phone}
-                  onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
+                  onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 outline-none focus:border-green-600 font-medium text-slate-900"
                 />
                 <Phone className="w-4 h-4 text-slate-400 absolute left-3.5" />
@@ -473,11 +474,13 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block text-slate-700 font-bold mb-1">Contact Phone</label>
+                <label className="block text-slate-700 font-bold mb-1">Contact Phone (10 Digits)</label>
                 <input
-                  type="text"
+                  type="tel"
+                  maxLength={10}
+                  placeholder="e.g. 9876543210"
                   value={addressData.phone}
-                  onChange={(e) => setAddressData({ ...addressData, phone: e.target.value })}
+                  onChange={(e) => setAddressData({ ...addressData, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 outline-none focus:border-green-600 font-medium"
                 />
               </div>

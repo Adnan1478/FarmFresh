@@ -188,14 +188,15 @@ export default function AdminProfile() {
 
               <div>
                 <label className="block text-slate-700 font-bold uppercase tracking-wider mb-1">
-                  Phone Number
+                  Phone Number (10 Digits)
                 </label>
                 <div className="relative">
                   <input
-                    type="text"
-                    placeholder="e.g. +91 9876543210"
+                    type="tel"
+                    maxLength={10}
+                    placeholder="e.g. 9876543210"
                     value={profileData.phone}
-                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
+                    onChange={(e) => setProfileData({ ...profileData, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })}
                     className="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-4 py-2.5 outline-none focus:border-green-600 font-medium text-slate-900"
                   />
                   <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
