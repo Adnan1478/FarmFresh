@@ -1,0 +1,13 @@
+# Client Node Modules
+node_modules/
+
+# Production Build Output
+dist/
+dist-ssr/
+
+# Local Environment Overrides
+.env
+.env.local
+
+# Logs
+*.log

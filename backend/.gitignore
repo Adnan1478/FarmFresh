@@ -1,0 +1,12 @@
+# Backend Node Modules
+node_modules/
+
+# Environment Variables & Secrets (CRITICAL SECURITY)
+.env
+
+# Uploaded Files & Temporary Storage
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log

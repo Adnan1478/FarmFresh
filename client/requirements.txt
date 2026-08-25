@@ -1,0 +1,16 @@
+# FarmFresh React Frontend Dependencies List
+# Run 'npm install' in the client folder to install all packages automatically.
+
+@tailwindcss/vite==4.3.3
+@types/react==19.2.17
+@types/react-dom==19.2.3
+@vitejs/plugin-react==6.0.4
+axios==1.19.0
+lucide-react==1.31.0
+oxlint==1.75.0
+react==19.2.8
+react-dom==19.2.8
+react-router-dom==7.18.2
+recharts==3.10.1
+tailwindcss==4.3.3
+vite==8.2.0
