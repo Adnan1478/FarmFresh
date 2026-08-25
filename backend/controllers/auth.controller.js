@@ -17,7 +17,7 @@ const generateToken = (user) => {
 const getCookieOptions = () => ({
   httpOnly: true, // Prevents XSS script access to session token
   secure: process.env.NODE_ENV === "production", // Transmitted over HTTPS in production
-  sameSite: "lax", // Protects against CSRF attacks
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Allows cross-site Vercel <-> Render cookies in production
   maxAge: 24 * 60 * 60 * 1000, // 24 hours
 });
 

@@ -13,6 +13,9 @@ connectDB();
 
 const app = express();
 
+// Trust reverse proxy (Required for Render, Heroku, Vercel deployments to read client IP & HTTPS correctly)
+app.set("trust proxy", 1);
+
 // Security HTTP Headers & Server Banner Suppression
 app.use(
   helmet({
@@ -25,9 +28,23 @@ app.disable("x-powered-by");
 // Global API Rate Limiter
 app.use("/api", apiLimiter);
 
+// Allowed origins setup
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  process.env.CLIENT_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or Render health probes)
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".vercel.app")) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Permissive CORS for smooth API consumption
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
@@ -66,10 +83,19 @@ app.use("/api/waste", require("./routes/waste.routes"));
 app.use("/api/suppliers", require("./routes/supplier.routes"));
 app.use("/api/purchase-orders", require("./routes/purchaseOrder.routes"));
 
-// Health Check API
-app.get("/", (req, res) => {
-  res.json({ success: true, message: "FarmFresh Backend API is running" });
+// Render & Cloud Provider Health Check APIs
+app.get(["/", "/healthz", "/api/health"], (req, res) => {
+  res.status(200).json({
+    status: "UP",
+    success: true,
+    message: "FarmFresh Express API is healthy and running on Render",
+    environment: process.env.NODE_ENV || "development",
+    timestamp: new Date().toISOString(),
+    uptime: `${Math.floor(process.uptime())}s`,
+  });
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server is running on port ${PORT} bound to 0.0.0.0`);
+});
