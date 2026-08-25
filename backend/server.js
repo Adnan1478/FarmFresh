@@ -32,6 +32,7 @@ app.use("/api", apiLimiter);
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
+  "https://farmfresh-livid.vercel.app/"
   process.env.CLIENT_URL,
 ].filter(Boolean);
 
